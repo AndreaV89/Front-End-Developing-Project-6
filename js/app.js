@@ -55,12 +55,47 @@ function checkLetter (button) {
     }
 }
 
+// win
+function win () {
+    overlay.setAttribute('class', 'win');
+    overlay.style.display = 'flex';
+    const winTitle = document.createElement('H2');
+    winTitle.innerText = 'You Win!!';
+    winTitle.className = 'title';
+    overlay.insertBefore(winTitle, startButton[0]);
+    startButton[0].textContent = 'Restart Game';
+}
+
+// lose
+function lose () {
+    overlay.setAttribute('class', 'lose');
+    overlay.style.display = 'flex';
+    const loseTitle = document.createElement('H2');
+    loseTitle.innerText = 'You Lose!!';
+    loseTitle.className = 'title';
+    overlay.insertBefore(loseTitle, startButton[0]);
+    startButton[0].textContent = 'Restart Game';
+}
+
 // restart game
 function restartGame() {
-    const li = ul.getElementsByTagName('li');
-    while (li.length > 0) {
-        ul.removeChild(li[0]);
+    keyboardBtn = document.querySelectorAll('.keyrow button');
+    li = ul.getElementsByTagName('li');
+    overlay.style.display = 'none';
+    missed = 0;
+    for (let j = 0; j < tries.length; j++) {
+        tries[j].setAttribute ('src', 'images/liveHeart.png');
     }
+    for (let c = 0; c < keyboardBtn.length; c ++) {
+        keyboardBtn[c].removeAttribute('class');
+        keyboardBtn[c].removeAttribute('disabled');
+    }
+    while (li.length > 0) {
+        li[0].remove();
+        characters.shift();
+    }
+    const phraseArray = getRandomPhraseAsArray(phrases);
+    addPhraseToDisplay(phraseArray);
 }
 
 // check win or lose
@@ -68,33 +103,34 @@ function checkWin () {
     const letters = ul.getElementsByClassName('letter');
     const letterShow = ul.getElementsByClassName('letter show');
     if (letterShow.length === letters.length) {
-        overlay.setAttribute('class', 'win');
-        overlay.style.display = 'flex';
-        restartGame();
+        win();
     } else if (missed >= 5){
-        overlay.setAttribute('class', 'lose');
-        overlay.style.display = 'flex';
-        restartGame();
+        lose();
     }
-
 }
 
 // Hide overlay and start game
 startButton[0].addEventListener('click', () => {
-    overlay.style.display = 'none';
-    const phraseArray = getRandomPhraseAsArray(phrases);
-    addPhraseToDisplay(phraseArray);
+    if (startButton[0].textContent === 'Start Game') {
+        overlay.style.display = 'none';
+        const phraseArray = getRandomPhraseAsArray(phrases);
+        addPhraseToDisplay(phraseArray);
+    } else {
+        restartGame();
+    }
 });
 
 qwertyDiv.addEventListener('click', function(e) {
-    e.target.className = 'chosen';
-    e.target.setAttribute ('disabled', '');
-    checkLetter(e.target); 
-    if (letterFound === null) {
-        tries[missed].setAttribute ('src', 'images/lostHeart.png');
-        missed ++;
-    } 
-    checkWin();
+    if (e.target.tagName === 'BUTTON'){
+        e.target.className = 'chosen';
+        e.target.setAttribute ('disabled', '');
+        checkLetter(e.target); 
+        if (letterFound === null) {
+            tries[missed].setAttribute ('src', 'images/lostHeart.png');
+            missed ++;
+        } 
+        checkWin();
+    }
 })
 
 
