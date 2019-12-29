@@ -58,6 +58,11 @@ button {
   transition: var(--transition);
 }
 
+img {
+  height: 35px; 
+  width: 30px;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -71,6 +76,7 @@ button {
   width: 100%;
   padding: 10px;
 }
+
 
 /* Title */
 
