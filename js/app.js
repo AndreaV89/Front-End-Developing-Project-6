@@ -7,11 +7,16 @@ const overlay = document.getElementById('overlay');
 var missed = 0;
 var letterFound;
 const phrases = [
-    'Java Script', 
-    'Pyt hon', 
-    'Ja va', 
-    'Sw ift', 
-    'Ru by'
+    'I hear that Nancy is very pretty', 
+    'Tom got a small piece of pie', 
+    'The stranger officiates the meal', 
+    'She always speaks to him', 
+    'We have never been to Asia',
+    'There was no ice cream',
+    'He told us an adventure story',
+    'The quick brown fox jumps',
+    'Christmas is coming',
+    'We need to rent a room'
 ];
 const characters = [];
 
@@ -55,31 +60,21 @@ function checkLetter (button) {
     }
 }
 
-// win
-function win () {
-    overlay.setAttribute('class', 'win');
+// create win or lose overlay
+function winLoseOverlay (x) {
+    overlay.setAttribute('class', x);
     overlay.style.display = 'flex';
-    const winTitle = document.createElement('H2');
-    winTitle.innerText = 'You Win!!';
-    winTitle.className = 'title';
-    overlay.insertBefore(winTitle, startButton[0]);
-    startButton[0].textContent = 'Restart Game';
-}
-
-// lose
-function lose () {
-    overlay.setAttribute('class', 'lose');
-    overlay.style.display = 'flex';
-    const loseTitle = document.createElement('H2');
-    loseTitle.innerText = 'You Lose!!';
-    loseTitle.className = 'title';
-    overlay.insertBefore(loseTitle, startButton[0]);
+    const winLoseTitle = document.createElement('H2');
+    winLoseTitle.innerText = 'You ' + x + '!!';
+    winLoseTitle.className = 'title';
+    overlay.insertBefore(winLoseTitle, startButton[0]);
     startButton[0].textContent = 'Restart Game';
 }
 
 // restart game
 function restartGame() {
     keyboardBtn = document.querySelectorAll('.keyrow button');
+    h2 = document.getElementsByTagName('h2');
     li = ul.getElementsByTagName('li');
     overlay.style.display = 'none';
     missed = 0;
@@ -94,18 +89,22 @@ function restartGame() {
         li[0].remove();
         characters.shift();
     }
+    h2[1].remove();
     const phraseArray = getRandomPhraseAsArray(phrases);
     addPhraseToDisplay(phraseArray);
 }
 
 // check win or lose
 function checkWin () {
+    var winLose = '';
     const letters = ul.getElementsByClassName('letter');
     const letterShow = ul.getElementsByClassName('letter show');
     if (letterShow.length === letters.length) {
-        win();
+        winLose = 'win';
+        winLoseOverlay(winLose);
     } else if (missed >= 5){
-        lose();
+        winLose = 'lose';
+        winLoseOverlay(winLose);
     }
 }
 

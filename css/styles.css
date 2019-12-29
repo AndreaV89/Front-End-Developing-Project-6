@@ -32,7 +32,10 @@ body {
 li, ol, ul {
   padding: 0;
   display: inline-block;
+  margin-top: 10px;
+  transition: color 1.5s, background-color 1.5s;
 }
+
 
 h2 {
   margin: 0;
